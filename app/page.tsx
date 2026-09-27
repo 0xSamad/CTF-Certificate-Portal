@@ -6,7 +6,7 @@ export default function Home() {
     <div className="mx-auto max-w-2xl text-center">
       <div className="mb-5 inline-flex rounded-full border border-cyan-400/30 bg-cyan-400/10 px-4 py-1.5 text-sm text-cyan-200">Certificate verification portal</div>
       <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">{eventName}</h1>
-      <p className="mx-auto mt-5 max-w-xl text-lg leading-8 text-slate-300">Find your official CTF certificate with the email address used for registration.</p>
+      <p className="mx-auto mt-5 max-w-xl text-lg leading-8 text-slate-300">Browse the public certificate gallery and download your official CTF certificate by name.</p>
       <CertificateSearch />
     </div>
   </main>;

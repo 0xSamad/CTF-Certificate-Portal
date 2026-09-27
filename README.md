@@ -5,15 +5,14 @@ A Vercel-ready Next.js App Router application for issuing, storing, verifying, a
 ## What it does
 
 - Admin passkey-protected `/admin` dashboard with signed, HttpOnly sessions.
-- Participation and Top 5 `.docx` template uploads. The supported `docxtemplater` tags are `{fullName}`, `{email}`, `{rank}`, and `{date}`. The included Peshawar Pentesters designs are also accepted directly, using their existing `[STUDENT NAME]` and `[RANK]` markers.
-- CSV/XLS/XLSX import, explicit column mapping, email/rank validation, duplicate detection, and Top 5 auto-detection.
-- Browser-driven batches of **10** records. Each request stays short enough for Vercel's serverless limits; the dashboard drives the next batch and displays progress.
-- `docxtemplater`/`pizzip` renders each uploaded DOCX to validate its tags; `@react-pdf/renderer` creates the final server-side PDF. This avoids native LibreOffice/Chromium binaries and is dependable on Vercel.
-- Private PDF storage and 30-minute signed URLs for both the participant portal and admin exports.
+- CSV/XLS/XLSX import with only **Full Name** required and optional **Rank** for Top 5 detection.
+- Browser-driven batches of **10** records, each generating a branded JPG named from the participant's full name.
+- Built-in Peshawar Pentesters participation and Top 5 artwork, produced from the supplied certificate designs.
+- A public home-page gallery where anyone can search by name and download the JPG certificate.
 
 ## Setup
 
-1. Create a Supabase project and run [the migration](./supabase/migrations/001_certificates.sql) in its SQL Editor.
+1. Create a Supabase project and run [the migration](./supabase/migrations/001_certificates.sql) in its SQL Editor. If you ran an older version of the migration before this JPG-gallery change, run [002_public_jpg_gallery.sql](./supabase/migrations/002_public_jpg_gallery.sql) afterwards.
 2. Copy `.env.example` to `.env.local`, fill in the Supabase URL/service-role key, and generate strong `ADMIN_PASSKEY` and `ADMIN_SESSION_SECRET` values.
 3. Install and run:
 
@@ -22,16 +21,12 @@ A Vercel-ready Next.js App Router application for issuing, storing, verifying, a
    npm run dev
    ```
 
-4. Visit `/admin`, upload both `.docx` templates, then upload the participant spreadsheet. Visit `/` to verify a certificate by email.
+4. Visit `/admin`, upload the participant spreadsheet, and generate JPGs. Visit `/` to browse the public gallery.
 
 ## Deploy to Vercel
 
 Import the GitHub repository in Vercel, add every variable from `.env.example` in **Project Settings → Environment Variables**, and deploy. The generation route is configured for the 60-second Vercel function maximum, but browser batching keeps each call to at most ten PDFs.
 
-## Important implementation note
-
-Vercel serverless functions do not support the usual local LibreOffice DOCX-to-PDF executable. This project deliberately uses a server-side React PDF certificate design for the deliverable while still rendering uploaded DOCX templates through `docxtemplater` so placeholder syntax is enforced. If visual fidelity to an existing Word design is required, replace `generateCertificatePdf` in `lib/certificate-pdf.tsx` with an external DOCX/PDF conversion provider; the upload, queue, storage, and metadata contract remains unchanged.
-
 ## Security model
 
-The browser never receives the Supabase service-role key. The database has RLS enabled with no client policies, storage buckets are private, and documents are provided only through expiring signed URLs. The admin passkey is compared server-side using a timing-safe comparison and a signed HttpOnly cookie limits access to 12 hours.
+The browser never receives the Supabase service-role key. The database has RLS enabled with no client policies. The `certificate-images` bucket is deliberately public because this version publishes a searchable gallery of names and certificate images. The admin passkey is compared server-side using a timing-safe comparison and a signed HttpOnly cookie limits access to 12 hours.
