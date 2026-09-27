@@ -19,13 +19,13 @@ function CertificateDocument({ participant, type, date }: { participant: Partici
   return <Document title={`${eventName} certificate - ${participant.fullName}`}>
     <Page size="A4" orientation="landscape" style={styles.page}>
       <View style={styles.border}>
-        <Text style={styles.eyebrow}>{eventName.toUpperCase()}</Text>
-        <Text style={styles.title}>Certificate of Achievement</Text>
+        <Text style={styles.eyebrow}>PESHAWAR PENTESTERS · {eventName.toUpperCase()}</Text>
+        <Text style={styles.title}>{type === "TOP_5" ? "Certificate of Excellence" : "Certificate of Participation"}</Text>
         <Text style={styles.body}>This certificate is proudly presented to</Text>
         <Text style={styles.name}>{participant.fullName}</Text>
-        <Text style={styles.body}>for skill, curiosity, and determination demonstrated during the Capture The Flag event.</Text>
+        <Text style={styles.body}>{type === "TOP_5" ? "for outstanding performance, exceptional technical proficiency, and excellence in cybersecurity." : "for successfully competing with technical proficiency, problem-solving skills, and dedication to cybersecurity."}</Text>
         <Text style={styles.tier}>{achievement}</Text>
-        <Text style={styles.date}>Issued {date}</Text>
+        <Text style={styles.date}>Organized by Peshawar Pentesters · Issued {date}</Text>
       </View>
     </Page>
   </Document>;

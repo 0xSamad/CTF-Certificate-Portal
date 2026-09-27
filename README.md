@@ -5,7 +5,7 @@ A Vercel-ready Next.js App Router application for issuing, storing, verifying, a
 ## What it does
 
 - Admin passkey-protected `/admin` dashboard with signed, HttpOnly sessions.
-- Participation and Top 5 `.docx` template uploads. The supported `docxtemplater` tags are `{fullName}`, `{email}`, `{rank}`, and `{date}`.
+- Participation and Top 5 `.docx` template uploads. The supported `docxtemplater` tags are `{fullName}`, `{email}`, `{rank}`, and `{date}`. The included Peshawar Pentesters designs are also accepted directly, using their existing `[STUDENT NAME]` and `[RANK]` markers.
 - CSV/XLS/XLSX import, explicit column mapping, email/rank validation, duplicate detection, and Top 5 auto-detection.
 - Browser-driven batches of **10** records. Each request stays short enough for Vercel's serverless limits; the dashboard drives the next batch and displays progress.
 - `docxtemplater`/`pizzip` renders each uploaded DOCX to validate its tags; `@react-pdf/renderer` creates the final server-side PDF. This avoids native LibreOffice/Chromium binaries and is dependable on Vercel.
